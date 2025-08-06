@@ -3,16 +3,16 @@
     <img src="https://images.vexels.com/media/users/3/142789/isolated/preview/2bfb04ad814c4995f0c537c68db5cd0b-logotipo-de-circulo-de-remolinos-multicolor.png?w=360" alt="">
   </div>
   <div class="right-side">
-    <form>
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
 
       <div class="input-group">
-        <label for="username">Usuarios</label>
-        <input type="text" id="username" name="username" required>
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" required formControlName="username">
       </div>
 
       <div class="input-group">
         <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password" required formControlName="password">
       </div>
 
       <div class="input-group">
