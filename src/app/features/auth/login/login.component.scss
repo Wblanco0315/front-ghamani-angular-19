@@ -1,0 +1,50 @@
+.container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 20rem;
+  background: 	#008080;
+  border-radius: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+.left-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1em;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
+
+.right-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1em;
+
+  form {
+    width: 100%;
+  }
+
+  .input-group{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 1em;
+  }
+}
