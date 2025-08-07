@@ -4,13 +4,18 @@
     <div class="search-filters">
       <!-- Search Box -->
       <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+          <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
+            <path d="M21 38c9.389 0 17-7.611 17-17S30.389 4 21 4S4 11.611 4 21s7.611 17 17 17Z"/>
+            <path stroke-linecap="round" d="M26.657 14.343A7.98 7.98 0 0 0 21 12a7.98 7.98 0 0 0-5.657 2.343m17.879 18.879l8.485 8.485"/>
+          </g>
+        </svg>
         <input
           type="text"
           [(ngModel)]="searchTerm"
           (ngModelChange)="onSearchChange()"
           placeholder="Buscar productos..."
           class="search-input">
-        <i class="search-icon">🔍</i>
       </div>
 
       <!-- Category Filter -->
@@ -54,7 +59,13 @@
         (click)="clearFilters()"
         class="btn-clear-filters"
         [disabled]="!searchTerm && !selectedCategory && !selectedGender && !selectedPriceRange">
-        <i class="icon">🗑️</i>
+        <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+          <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
+            <path d="M9 10v34h30V10z"/>
+            <path stroke-linecap="round" d="M20 20v13m8-13v13M4 10h40"/>
+            <path d="m16 10l3.289-6h9.488L32 10z"/>
+          </g>
+        </svg>
         Limpiar filtros
       </button>
     </div>

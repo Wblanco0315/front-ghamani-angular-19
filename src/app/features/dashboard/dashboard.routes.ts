@@ -22,15 +22,14 @@ export const dashboardRoutes:Routes = [
     loadComponent: () => import('./view-orders/view-orders.component').then(m => m.ViewOrdersComponent),
   },
   {
+    title: 'Dashboard',
+    path:'profile',
+    loadComponent: () => import('./view-profile/view-profile.component').then(m => m.ViewProfileComponent),
+  },
+
+  {
     path:'',
     redirectTo: 'home',
     pathMatch: 'full'
   }
-  /*
-  {
-    title: 'Dashboard',
-    path: 'client',
-   loadComponent: () => import('./client-dashboard/client-dashboard.component').then(m => m.ClientDashboardComponent),
-  }
-   */
 ]

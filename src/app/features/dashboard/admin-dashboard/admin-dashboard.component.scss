@@ -88,6 +88,18 @@
   flex: 1;
   max-width: 400px;
 
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--text-secondary);
+    pointer-events: none;
+    z-index: 2;
+  }
+
   .search-input {
     width: 100%;
     display: flex;
@@ -106,15 +118,6 @@
     &::placeholder {
       color: #a0aec0;
     }
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-secondary);
-    font-size: 1rem;
   }
 }
 
@@ -162,8 +165,10 @@
     transform: none;
   }
 
-  .icon {
-    font-size: 1rem;
+  .btn-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
   }
 }
 // === LOADING STATE ===

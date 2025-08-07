@@ -9,13 +9,18 @@
   <div class="controls-section">
     <div class="search-filters">
       <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+          <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
+            <path d="M21 38c9.389 0 17-7.611 17-17S30.389 4 21 4S4 11.611 4 21s7.611 17 17 17Z"/>
+            <path stroke-linecap="round" d="M26.657 14.343A7.98 7.98 0 0 0 21 12a7.98 7.98 0 0 0-5.657 2.343m17.879 18.879l8.485 8.485"/>
+          </g>
+        </svg>
         <input
           type="text"
           [ngModel]="searchTerm"
           (ngModelChange)="searchTerm = $event; applyFilters()"
           placeholder="Buscar productos..."
           class="search-input">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path d="M21 38c9.389 0 17-7.611 17-17S30.389 4 21 4S4 11.611 4 21s7.611 17 17 17Z"/><path stroke-linecap="round" d="M26.657 14.343A7.98 7.98 0 0 0 21 12a7.98 7.98 0 0 0-5.657 2.343m17.879 18.879l8.485 8.485"/></g></svg>
       </div>
 
       <select
@@ -31,7 +36,9 @@
       (click)="openCreateModal()"
       class="btn-create"
       [disabled]="isLoading">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z"/></svg>
+      <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z"/>
+      </svg>
       Nuevo Producto
     </button>
   </div>
@@ -93,14 +100,25 @@
             (click)="openEditModal(product)"
             class="action-btn primary"
             [disabled]="isLoading">
-            <i class="fas fa-edit"></i>
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1"/>
+                <path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3"/>
+              </g>
+            </svg>
             Editar
           </button>
           <button
             (click)="deleteProduct(product)"
             class="action-btn danger"
             [disabled]="isLoading">
-            <i class="fas fa-trash"></i>
+            <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+              <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4">
+                <path d="M9 10v34h30V10z"/>
+                <path stroke-linecap="round" d="M20 20v13m8-13v13M4 10h40"/>
+                <path d="m16 10l3.289-6h9.488L32 10z"/>
+              </g>
+            </svg>
             Eliminar
           </button>
         </div>

@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
         title: 'Mi Cuenta',
         navItem: [
           ...baseNavItems,
-          { path: '/dashboard/client', icon: 'fas fa-user', name: 'Mi Perfil' },
+          { path: '/dashboard/profile', icon: 'fas fa-user', name: 'Mi Perfil' },
           { path: '/dashboard/products', icon: 'fas fa-heart', name: 'Ver Productos' },
           { path: '/dashboard/orders', icon: 'fas fa-shopping-bag', name: 'Mis Pedidos' }
         ]
