@@ -1,0 +1,293 @@
+<div class="admin-dashboard">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>Panel de Administración</h1>
+    <p>Gestiona los productos de tu tienda</p>
+  </div>
+
+  <!-- Controles superiores -->
+  <div class="controls-section">
+    <div class="search-filters">
+      <div class="search-box">
+        <input
+          type="text"
+          [ngModel]="searchTerm"
+          (ngModelChange)="searchTerm = $event; applyFilters()"
+          placeholder="Buscar productos..."
+          class="search-input">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="4"><path d="M21 38c9.389 0 17-7.611 17-17S30.389 4 21 4S4 11.611 4 21s7.611 17 17 17Z"/><path stroke-linecap="round" d="M26.657 14.343A7.98 7.98 0 0 0 21 12a7.98 7.98 0 0 0-5.657 2.343m17.879 18.879l8.485 8.485"/></g></svg>
+      </div>
+
+      <select
+        [ngModel]="selectedCategory"
+        (ngModelChange)="selectedCategory = $event; applyFilters()"
+        class="category-filter">
+        <option value="">Todas las categorías</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+    </div>
+
+    <button
+      (click)="openCreateModal()"
+      class="btn-create"
+      [disabled]="isLoading">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z"/></svg>
+      Nuevo Producto
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Cargando productos...</p>
+  </div>
+
+  <!-- Products grid -->
+  <div *ngIf="!isLoading" class="products-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <!-- Product Image -->
+      <div class="product-image">
+        <img
+          [src]="product.imagen_url || '/assets/placeholder-product.jpg'"
+          [alt]="product.nombre"
+          loading="lazy">
+        <div class="product-overlay">
+          <div class="stock-badge" [class]="getStockStatus(product.cantidad).class">
+            {{ getStockStatus(product.cantidad).text }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <h3 class="product-name">{{ product.nombre }}</h3>
+        <p class="product-description">{{ product.descripcion | slice:0:120 }}{{ product.descripcion.length > 120 ? '...' : '' }}</p>
+
+        <!-- Product Details -->
+        <div class="product-details">
+          <div class="price-section">
+            <span class="price">{{ formatPrice(product.precio) }}</span>
+          </div>
+
+          <div class="product-tags">
+            <span class="tag category">{{ product.categoria }}</span>
+            <span class="tag gender">{{ product.genero }}</span>
+            <span class="tag color">{{ product.color }}</span>
+            <span *ngIf="product.talla" class="tag size">{{ product.talla }}</span>
+          </div>
+        </div>
+
+        <!-- Stock Information -->
+        <div class="stock-info">
+          <div class="stock-indicator">
+            <span class="stock-label">Stock:</span>
+            <span class="stock-amount" [class]="getStockStatus(product.cantidad).class">
+              {{ product.cantidad }} unidades
+            </span>
+          </div>
+        </div>
+
+        <!-- Admin Actions (Bottom) -->
+        <div class="product-actions">
+          <button
+            (click)="openEditModal(product)"
+            class="action-btn primary"
+            [disabled]="isLoading">
+            <i class="fas fa-edit"></i>
+            Editar
+          </button>
+          <button
+            (click)="deleteProduct(product)"
+            class="action-btn danger"
+            [disabled]="isLoading">
+            <i class="fas fa-trash"></i>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && products.length === 0" class="empty-state">
+    <div class="empty-icon">📦</div>
+    <h3>No hay productos</h3>
+    <p>Comienza agregando tu primer producto</p>
+    <button (click)="openCreateModal()" class="btn-create">
+      Crear Producto
+    </button>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!isLoading && products.length > 0" class="pagination">
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 0"
+      class="btn-page">
+      Anterior
+    </button>
+
+    <span class="page-info">
+      Página {{ currentPage + 1 }} de {{ totalPages }}
+    </span>
+
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage >= totalPages - 1"
+      class="btn-page">
+      Siguiente
+    </button>
+  </div>
+</div>
+
+<!-- Modal para crear/editar producto -->
+<div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditing ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+      <button (click)="closeModal()" class="btn-close">✕</button>
+    </div>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre del Producto *</label>
+          <input
+            type="text"
+            id="nombre"
+            formControlName="nombre"
+            class="form-input"
+            [class.error]="getFieldError('nombre')">
+          <span *ngIf="getFieldError('nombre')" class="error-message">
+            {{ getFieldError('nombre') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="precio">Precio *</label>
+          <input
+            type="number"
+            id="precio"
+            formControlName="precio"
+            class="form-input"
+            [class.error]="getFieldError('precio')"
+            min="0"
+            step="0.01">
+          <span *ngIf="getFieldError('precio')" class="error-message">
+            {{ getFieldError('precio') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción *</label>
+        <textarea
+          id="descripcion"
+          formControlName="descripcion"
+          class="form-textarea"
+          [class.error]="getFieldError('descripcion')"
+          rows="3"></textarea>
+        <span *ngIf="getFieldError('descripcion')" class="error-message">
+          {{ getFieldError('descripcion') }}
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="categoria">Categoría *</label>
+          <select
+            id="categoria"
+            formControlName="categoria"
+            class="form-select"
+            [class.error]="getFieldError('categoria')">
+            <option value="">Seleccionar categoría</option>
+            <option *ngFor="let category of categories" [value]="category.toUpperCase()">{{ category }}</option>
+          </select>
+          <span *ngIf="getFieldError('categoria')" class="error-message">
+            {{ getFieldError('categoria') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="cantidad">Stock *</label>
+          <input
+            type="number"
+            id="cantidad"
+            formControlName="cantidad"
+            class="form-input"
+            [class.error]="getFieldError('cantidad')"
+            min="0">
+          <span *ngIf="getFieldError('cantidad')" class="error-message">
+            {{ getFieldError('cantidad') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="color">Color *</label>
+          <input
+            type="text"
+            id="color"
+            formControlName="color"
+            class="form-input"
+            [class.error]="getFieldError('color')">
+          <span *ngIf="getFieldError('color')" class="error-message">
+            {{ getFieldError('color') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="genero">Género *</label>
+          <select
+            id="genero"
+            formControlName="genero"
+            class="form-select"
+            [class.error]="getFieldError('genero')">
+            <option value="MUJER">Femenino</option>
+            <option value="HOMBRE">Masculino</option>
+            <option value="NIÑO">Niño</option>
+            <option value="NIÑA">Niña</option>
+          </select>
+          <span *ngIf="getFieldError('genero')" class="error-message">
+            {{ getFieldError('genero') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="talla">Talla</label>
+          <input
+            type="text"
+            id="talla"
+            formControlName="talla"
+            class="form-input"
+            placeholder="XS, S, M, L, XL">
+        </div>
+
+        <div class="form-group">
+          <label for="imagen_url">URL de Imagen</label>
+          <input
+            type="url"
+            id="imagen_url"
+            formControlName="imagen_url"
+            class="form-input"
+            placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="closeModal()" class="btn-cancel">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn-save"
+          [disabled]="productForm.invalid || isLoading">
+          {{ isEditing ? 'Actualizar' : 'Crear' }} Producto
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

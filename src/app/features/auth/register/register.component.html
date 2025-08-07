@@ -1,46 +1,252 @@
-<div class="container">
-  <div class="right-side">
-    <form class="login-form" [formGroup]="registerForm" (ngSubmit)="register()">
-
-      <div class="input-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required
-          formControlName="email">
+<div class="register-container">
+  <!-- Left panel with hero content -->
+  <div class="hero-panel">
+    <div class="hero-content">
+      <div class="brand-section">
+        <div class="brand-icon">✨</div>
+        <h1 class="brand-title">Únete a Ghamani</h1>
+        <p class="brand-subtitle">Descubre tu estilo único</p>
       </div>
 
-      <div class="input-group">
-        <label for="username">Usuario</label>
-        <input type="text" id="username" name="username" required
-          formControlName="username">
+      <div class="hero-image">
+        <div class="hero-icon">👗</div>
       </div>
 
-      <div class="input-group">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" required
-          formControlName="password">
+      <div class="benefits-list">
+        <div class="benefit-item">
+          <div class="benefit-icon">🎁</div>
+          <span>10% de descuento en tu primera compra</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">👑</div>
+          <span>Acceso exclusivo a nuevas colecciones</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">💌</div>
+          <span>Newsletter con consejos de moda</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel with register form -->
+  <div class="form-panel">
+    <div class="form-container">
+      <div class="welcome-section">
+        <h2 class="welcome-title">Crear tu cuenta</h2>
+        <p class="welcome-subtitle">Únete a nuestra comunidad de moda y estilo</p>
       </div>
 
-      <div class="input-group">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" required
-          formControlName="nombre">
-      </div>
+      <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="nombre" class="field-label">
+              <span class="label-icon">👤</span>
+              Nombre
+            </label>
+            <input
+              type="text"
+              id="nombre"
+              formControlName="nombre"
+              placeholder="Tu nombre"
+              class="register-input"
+              [class.invalid]="isFieldInvalid('nombre')"
+              autocomplete="given-name">
+            <small
+              *ngIf="isFieldInvalid('nombre')"
+              class="error-message">
+              {{ getFieldError('nombre') }}
+            </small>
+          </div>
 
-      <div class="input-group">
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" required
-          formControlName="apellido">
-      </div>
+          <div class="form-field">
+            <label for="apellido" class="field-label">
+              <span class="label-icon">👥</span>
+              Apellido
+            </label>
+            <input
+              type="text"
+              id="apellido"
+              formControlName="apellido"
+              placeholder="Tu apellido"
+              class="register-input"
+              [class.invalid]="isFieldInvalid('apellido')"
+              autocomplete="family-name">
+            <small
+              *ngIf="isFieldInvalid('apellido')"
+              class="error-message">
+              {{ getFieldError('apellido') }}
+            </small>
+          </div>
+        </div>
 
-      <div class="input-group">
-        <label for="telefono">Teléfono</label>
-        <input type="text" id="telefono" name="telefono" required
-          formControlName="telefono">
-      </div>
+        <div class="form-field">
+          <label for="email" class="field-label">
+            <span class="label-icon">📧</span>
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="tu@email.com"
+            class="register-input"
+            [class.invalid]="isFieldInvalid('email')"
+            autocomplete="email">
+          <small
+            *ngIf="isFieldInvalid('email')"
+            class="error-message">
+            {{ getFieldError('email') }}
+          </small>
+        </div>
 
-      <div class="input-group">
-        <button type="submit">Registrar</button>
+        <div class="form-field">
+          <label for="username" class="field-label">
+            <span class="label-icon">🏷️</span>
+            Nombre de usuario
+          </label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            placeholder="Elige un nombre de usuario único"
+            class="register-input"
+            [class.invalid]="isFieldInvalid('username')"
+            autocomplete="username">
+          <small
+            *ngIf="isFieldInvalid('username')"
+            class="error-message">
+            {{ getFieldError('username') }}
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="telefono" class="field-label">
+            <span class="label-icon">📱</span>
+            Teléfono
+          </label>
+          <input
+            type="tel"
+            id="telefono"
+            formControlName="telefono"
+            placeholder="+57 300 123 4567"
+            class="register-input"
+            [class.invalid]="isFieldInvalid('telefono')"
+            autocomplete="tel">
+          <small
+            *ngIf="isFieldInvalid('telefono')"
+            class="error-message">
+            {{ getFieldError('telefono') }}
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="password" class="field-label">
+            <span class="label-icon">🔒</span>
+            Contraseña
+          </label>
+          <div class="password-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Mínimo 6 caracteres"
+              class="register-input password-input"
+              [class.invalid]="isFieldInvalid('password')"
+              autocomplete="new-password">
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="showPassword = !showPassword">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+          <div class="password-strength" *ngIf="registerForm.get('password')?.value">
+            <div class="strength-indicator" [class]="getPasswordStrength()">
+              <div class="strength-bar"></div>
+            </div>
+            <small class="strength-text">{{ getPasswordStrengthText() }}</small>
+          </div>
+          <small
+            *ngIf="isFieldInvalid('password')"
+            class="error-message">
+            {{ getFieldError('password') }}
+          </small>
+        </div>
+
+        <div class="form-field">
+          <div class="terms-section">
+            <input
+              type="checkbox"
+              id="acceptTerms"
+              formControlName="acceptTerms"
+              class="checkbox">
+            <label for="acceptTerms" class="terms-label">
+              Acepto los
+              <button type="button" class="link-button" (click)="openTerms()">términos y condiciones</button>
+              y la
+              <button type="button" class="link-button" (click)="openPrivacy()">política de privacidad</button>
+            </label>
+          </div>
+          <small
+            *ngIf="isFieldInvalid('acceptTerms')"
+            class="error-message">
+            Debes aceptar los términos y condiciones
+          </small>
+        </div>
+
+        <div class="form-field">
+          <div class="newsletter-section">
+            <input
+              type="checkbox"
+              id="newsletter"
+              formControlName="newsletter"
+              class="checkbox">
+            <label for="newsletter" class="newsletter-label">
+              Quiero recibir ofertas exclusivas y consejos de moda por email
+            </label>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="register-button"
+          [disabled]="registerForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Crear mi cuenta</span>
+          <span *ngIf="isLoading" class="loading-text">
+            <span class="spinner"></span>
+            Creando cuenta...
+          </span>
+        </button>
+
+        <div class="divider">
+          <span>o</span>
+        </div>
+
+        <button
+          type="button"
+          class="google-button"
+          (click)="registerWithGoogle()">
+          <span class="google-icon">G</span>
+          Registrarse con Google
+        </button>
+      </form>
+
+      <div class="login-section">
+        <p class="login-text">
+          ¿Ya tienes una cuenta?
+          <button type="button" class="login-link" (click)="goToLogin()">
+            Iniciar sesión
+          </button>
+        </p>
       </div>
-    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-spinner">
+    <div class="spinner-ring"></div>
   </div>
 </div>

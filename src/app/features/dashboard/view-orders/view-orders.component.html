@@ -1,0 +1,190 @@
+<!-- Loading Overlay -->
+<div *ngIf="isLoading()" class="loading-overlay">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Cargando tus pedidos...</p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="orders-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="page-title">
+          <i class="fas fa-shopping-bag"></i>
+          Mis Pedidos
+        </h1>
+        <p class="page-subtitle">Revisa el estado y detalles de todos tus pedidos</p>
+      </div>
+      
+      <div class="stats-summary">
+        <div class="stat-item">
+          <span class="stat-number">{{ totalOrders() }}</span>
+          <span class="stat-label">Pedidos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ formatCurrency(totalSpent()) }}</span>
+          <span class="stat-label">Total Gastado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="filters-container">
+      <!-- Search Filter -->
+      <div class="filter-group">
+        <label class="filter-label">
+          <i class="fas fa-search"></i>
+          Buscar pedidos
+        </label>
+        <div class="search-wrapper">
+          <input 
+            type="text" 
+            class="search-input"
+            placeholder="Buscar por ID, producto o dirección..."
+            [value]="searchTerm()"
+            (input)="onSearchChange($event)"
+          >
+          <i class="fas fa-search search-icon"></i>
+        </div>
+      </div>
+
+      <!-- Status Filter -->
+      <div class="filter-group">
+        <label class="filter-label">
+          <i class="fas fa-filter"></i>
+          Estado
+        </label>
+        <select 
+          class="status-select"
+          [value]="selectedStatus()"
+          (change)="onStatusChange($event)"
+        >
+          <option value="todos">Todos los estados</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="procesando">Procesando</option>
+          <option value="enviado">Enviado</option>
+          <option value="entregado">Entregado</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+
+      <!-- Results Count -->
+      <div class="results-info">
+        <span class="results-count">
+          {{ filteredOrders().length }} pedidos encontrados
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders List -->
+  <div class="orders-list">
+    <!-- Empty State -->
+    <div *ngIf="filteredOrders().length === 0 && !isLoading()" class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <h3 class="empty-title">No se encontraron pedidos</h3>
+      <p class="empty-message">
+        No tienes pedidos que coincidan con los filtros seleccionados.
+      </p>
+    </div>
+
+    <!-- Orders Grid -->
+    <div *ngIf="filteredOrders().length > 0" class="orders-grid">
+      <div *ngFor="let order of filteredOrders()" class="order-card">
+        <!-- Order Header -->
+        <div class="order-header">
+          <div class="order-info">
+            <h3 class="order-id">{{ order.id }}</h3>
+            <p class="order-date">{{ formatDate(order.fecha) }}</p>
+          </div>
+          
+          <div class="order-status">
+            <span 
+              class="status-badge"
+              [style.background-color]="getStatusColor(order.estado)"
+            >
+              <i [class]="getStatusIcon(order.estado)"></i>
+              {{ order.estado | titlecase }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items">
+          <div *ngFor="let item of order.items" class="order-item">
+            <div class="item-image">
+              <img [src]="item.imagenUrl" [alt]="item.nombre" />
+            </div>
+            
+            <div class="item-details">
+              <h4 class="item-name">{{ item.nombre }}</h4>
+              <div class="item-specs">
+                <span class="item-spec">Talla: {{ item.talla }}</span>
+                <span class="item-spec">Color: {{ item.color }}</span>
+                <span class="item-spec">Cant: {{ item.cantidad }}</span>
+              </div>
+              <p class="item-price">{{ formatCurrency(item.precio) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <div class="summary-row">
+            <span class="summary-label">
+              <i class="fas fa-map-marker-alt"></i>
+              Dirección:
+            </span>
+            <span class="summary-value">{{ order.direccionEnvio }}</span>
+          </div>
+          
+          <div class="summary-row">
+            <span class="summary-label">
+              <i class="fas fa-credit-card"></i>
+              Pago:
+            </span>
+            <span class="summary-value">{{ order.metodoPago }}</span>
+          </div>
+          
+          <div *ngIf="order.numeroSeguimiento" class="summary-row">
+            <span class="summary-label">
+              <i class="fas fa-truck"></i>
+              Seguimiento:
+            </span>
+            <span class="summary-value tracking">{{ order.numeroSeguimiento }}</span>
+          </div>
+          
+          <div class="summary-row total-row">
+            <span class="summary-label">Total:</span>
+            <span class="summary-total">{{ formatCurrency(order.total) }}</span>
+          </div>
+        </div>
+
+        <!-- Order Actions -->
+        <div class="order-actions">
+          <button class="action-btn secondary">
+            <i class="fas fa-eye"></i>
+            Ver Detalles
+          </button>
+          
+          <button *ngIf="order.numeroSeguimiento" class="action-btn primary">
+            <i class="fas fa-map-marker-alt"></i>
+            Rastrear Pedido
+          </button>
+          
+          <button *ngIf="order.estado === 'entregado'" class="action-btn success">
+            <i class="fas fa-star"></i>
+            Calificar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="home-dashboard">
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p>Cargando dashboard...</p>
+    </div>
+  </div>
+
+  <!-- Welcome Section -->
+  <section class="welcome-section">
+    <div class="welcome-content">
+      <div class="greeting">
+        <h1>{{ getTimeOfDay() }}, {{ currentUser()?.nombre || 'Usuario' }}! 👋</h1>
+        <p>Bienvenido/a al panel de control de Ghamani.</p>
+      </div>
+      <div class="welcome-visual">
+        <div class="brand-showcase">
+          <div class="brand-icon">✨</div>
+          <h3>Ghamani</h3>
+          <p>Moda Femenina Elegante</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Grid -->
+  <section class="stats-section">
+    <h2 class="section-title">Resumen General</h2>
+    <div class="stats-grid">
+      <div class="stat-card products">
+        <div class="stat-icon">📦</div>
+        <div class="stat-content">
+          <h3>Productos</h3>
+          <p class="stat-number">{{ stats().totalProducts }}</p>
+          <span class="stat-change positive">+12 este mes</span>
+        </div>
+      </div>
+
+      <div class="stat-card orders">
+        <div class="stat-icon">🛒</div>
+        <div class="stat-content">
+          <h3>Pedidos</h3>
+          <p class="stat-number">{{ stats().totalOrders }}</p>
+          <span class="stat-change positive">+8 esta semana</span>
+        </div>
+      </div>
+
+      <div class="stat-card users">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h3>Clientes</h3>
+          <p class="stat-number">{{ stats().totalUsers }}</p>
+          <span class="stat-change positive">+15 este mes</span>
+        </div>
+      </div>
+
+      <div class="stat-card revenue">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <h3>Ingresos del Mes</h3>
+          <p class="stat-number">{{ formatCurrency(stats().monthlyRevenue) }}</p>
+          <span class="stat-change positive">+23% vs mes anterior</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Activity -->
+  <section class="activity-section">
+    <h2 class="section-title">Actividad Reciente</h2>
+    <div class="activity-container">
+      <div class="activity-list">
+        <div
+          *ngFor="let activity of recentActivities(); let i = index"
+          class="activity-item"
+          [class]="'activity-' + activity.type">
+          <div class="activity-icon">{{ activity.icon }}</div>
+          <div class="activity-content">
+            <h4>{{ activity.title }}</h4>
+            <p>{{ activity.description }}</p>
+            <span class="activity-time">{{ getTimeAgo(activity.timestamp) }}</span>
+          </div>
+          <div class="activity-indicator"></div>
+        </div>
+      </div>
+
+      <!-- Activity Summary -->
+      <div class="activity-summary">
+        <h3>Resumen de Hoy</h3>
+        <div class="summary-stats">
+          <div class="summary-item">
+            <span class="summary-number">12</span>
+            <span class="summary-label">Nuevos pedidos</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-number">5</span>
+            <span class="summary-label">Productos actualizados</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-number">8</span>
+            <span class="summary-label">Nuevos clientes</span>
+          </div>
+        </div>
+
+        <div class="productivity-chart">
+          <h4>Rendimiento de la Semana</h4>
+          <div class="chart-bars">
+            <div class="bar" style="height: 60%"><span>L</span></div>
+            <div class="bar" style="height: 80%"><span>M</span></div>
+            <div class="bar" style="height: 45%"><span>M</span></div>
+            <div class="bar" style="height: 90%"><span>J</span></div>
+            <div class="bar" style="height: 70%"><span>V</span></div>
+            <div class="bar" style="height: 30%"><span>S</span></div>
+            <div class="bar" style="height: 25%"><span>D</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tips Section -->
+  <section class="tips-section">
+    <div class="tip-card">
+      <div class="tip-icon">💡</div>
+      <div class="tip-content">
+        <h3>Consejo del día</h3>
+        <p>Mantén actualizadas las fotos de tus productos para aumentar las ventas. Las imágenes de alta calidad pueden incrementar las conversiones hasta un 30%.</p>
+      </div>
+    </div>
+  </section>
+</div>

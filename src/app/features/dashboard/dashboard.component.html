@@ -1,0 +1,10 @@
+<!-- Dashboard con Sidebar Component -->
+<div class="dashboard-layout" *ngIf="isAuthenticated()">
+  <!-- Sidebar Component -->
+  <app-sidebar [propierties]="sidebarProps"></app-sidebar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

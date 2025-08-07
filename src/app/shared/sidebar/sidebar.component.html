@@ -1,0 +1,62 @@
+<aside class="lateral-navbar-container">
+  <div class="content">
+    <!-- Brand Header -->
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="brand-content">
+          <h2 class="brand-title">{{propierties.title}}</h2>
+          <span class="brand-subtitle">Ghamani Store</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="lateral-navbar">
+      <div class="nav-section">
+        <span class="section-title">Principal</span>
+        <ul class="nav-list">
+          @for (nav of propierties.navItem; track $index) {
+          <li class="nav-item">
+            <a [routerLink]="nav.path" routerLinkActive="active"
+              class="nav-link">
+              <div class="nav-icon">
+                <i class="{{nav.icon || 'fas fa-circle'}}"></i>
+              </div>
+              <span class="nav-text">{{nav.name}}</span>
+              <div class="nav-indicator"></div>
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
+    </nav>
+
+    <!-- User Profile Footer -->
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+          <div class="status-indicator"></div>
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{username}}</span>
+          <span class="user-role">{{role}}</span>
+        </div>
+        <div class="user-actions">
+          <!-- Botón de logout -->
+          <button
+            type="button"
+            class="action-btn logout-btn"
+            title="Cerrar sesión"
+            style="cursor: pointer; z-index: 9999; position: relative;"
+            (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path d="M9.002 7c.012-2.175.109-3.353.877-4.121C10.758 2 12.172 2 15 2h1c2.829 0 4.243 0 5.122.879C22 3.757 22 5.172 22 8v8c0 2.828 0 4.243-.878 5.121C20.242 22 18.829 22 16 22h-1c-2.828 0-4.242 0-5.121-.879c-.768-.768-.865-1.946-.877-4.121"/><path stroke-linejoin="round" d="M15 12H2m0 0l3.5-3M2 12l3.5 3"/></g></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>

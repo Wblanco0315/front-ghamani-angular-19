@@ -1,9 +1,54 @@
-.auth-principal-container{
-  width: 100%;
-  height: 100vh;
+// Estilos base para el contenedor de autenticación
+.auth-principal-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #101010;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  // Asegurar que el contenido ocupe toda la altura
+  :ng-deep router-outlet {
+    display: contents;
+  }
+
+  // Aplicar font loading para mejor rendimiento
+  font-display: swap;
+
+  // Variables CSS globales para consistencia
+  --auth-primary: #e91e63;
+  --auth-secondary: #673ab7;
+  --auth-success: #2ecc71;
+  --auth-error: #e74c3c;
+  --auth-warning: #f39c12;
+  --auth-text: #2c3e50;
+  --auth-text-light: #7f8c8d;
+  --auth-white: #ffffff;
+  --auth-border: #e1e8ed;
+  --auth-radius: 12px;
+  --auth-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --auth-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Estilos base para mejorar la consistencia visual
+* {
+  box-sizing: border-box;
+}
+
+// Mejoras para accesibilidad
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Estilos para modo oscuro
+@media (prefers-color-scheme: dark) {
+  .auth-principal-container {
+    --auth-text: #ffffff;
+    --auth-text-light: #a0aec0;
+    --auth-border: #4a5568;
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  }
 }
 

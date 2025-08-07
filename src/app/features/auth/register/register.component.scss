@@ -1,50 +1,569 @@
-.container{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 20rem;
-  background: 	#008080;
-  border-radius: 1rem;
+// Variables de colores para tienda de ropa femenina
+:host {
+  --primary-color: #e91e63; // Rosa elegante
+  --primary-light: #f8bbd9;
+  --primary-dark: #ad1457;
+  --secondary-color: #673ab7; // Púrpura sofisticado
+  --accent-color: #ff9800; // Dorado/naranja para acentos
+  --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --text-light: #ffffff;
+  --error-color: #e74c3c;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --border-radius: 12px;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.input-group {
+.register-container {
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--background-gradient);
 
-}
-
-.left-side {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1em;
-
-  img {
-    width: 100%;
-    height: auto;
-    max-width: 300px;
-    max-height: 300px;
-  }
-}
-
-.right-side {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1em;
-
-  form {
-    width: 100%;
-  }
-
-  .input-group{
-    display: flex;
+  @media (max-width: 768px) {
     flex-direction: column;
-    width: 100%;
-    margin-bottom: 1em;
+    min-height: auto;
+  }
+}
+
+// Panel izquierdo - Hero section
+.hero-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background-gradient);
+  color: var(--text-light);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    min-height: 30vh;
+    flex: none;
+  }
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 400px;
+  z-index: 1;
+  position: relative;
+}
+
+.brand-section {
+  margin-bottom: 2rem;
+
+  .brand-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+    animation: sparkle 2s infinite;
+  }
+
+  .brand-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(45deg, #fff, #f8bbd9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+  }
+
+  .brand-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+    font-weight: 300;
+  }
+}
+
+.hero-image {
+  margin: 1.5rem 0;
+
+  .hero-icon {
+    font-size: 4rem;
+    opacity: 0.8;
+    animation: sway 3s ease-in-out infinite;
+  }
+}
+
+.benefits-list {
+  margin-top: 1.5rem;
+
+  .benefit-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+
+    .benefit-icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+// Panel derecho - Formulario
+.form-panel {
+  flex: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 2rem;
+  overflow-y: auto;
+
+  @media (max-width: 768px) {
+    flex: none;
+    min-height: 70vh;
+  }
+}
+
+.form-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .welcome-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// Formulario
+.register-form {
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  .form-field {
+    margin-bottom: 1.25rem;
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+
+      .label-icon {
+        margin-right: 0.5rem;
+        font-size: 1rem;
+      }
+    }
+
+    .register-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e1e8ed;
+      border-radius: var(--border-radius);
+      font-size: 0.95rem;
+      transition: var(--transition);
+      background: #ffffff;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+      }
+
+      &.invalid {
+        border-color: var(--error-color);
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+      }
+
+      &::placeholder {
+        color: #a0aec0;
+      }
+    }
+
+    .password-wrapper {
+      position: relative;
+
+      .password-input {
+        padding-right: 3rem;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        font-size: 1.1rem;
+        cursor: pointer;
+        padding: 0.25rem;
+        color: var(--text-secondary);
+        transition: var(--transition);
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      display: block;
+    }
+  }
+}
+
+// Indicador de fortaleza de contraseña
+.password-strength {
+  margin-top: 0.5rem;
+
+  .strength-indicator {
+    height: 4px;
+    background: #e1e8ed;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+
+    .strength-bar {
+      height: 100%;
+      transition: var(--transition);
+      border-radius: 2px;
+    }
+
+    &.weak .strength-bar {
+      width: 33%;
+      background: var(--error-color);
+    }
+
+    &.medium .strength-bar {
+      width: 66%;
+      background: var(--warning-color);
+    }
+
+    &.strong .strength-bar {
+      width: 100%;
+      background: var(--success-color);
+    }
+  }
+
+  .strength-text {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+}
+
+// Secciones especiales
+.terms-section, .newsletter-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  .checkbox {
+    margin-top: 0.25rem;
+    accent-color: var(--primary-color);
+    flex-shrink: 0;
+  }
+
+  .terms-label, .newsletter-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    cursor: pointer;
+
+    .link-button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: inherit;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+
+      &:hover {
+        color: var(--primary-dark);
+      }
+    }
+  }
+}
+
+// Botones
+.register-button {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  margin: 1.5rem 0 1rem 0;
+
+  &:hover:not(:disabled) {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .loading-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.divider {
+  text-align: center;
+  margin: 1rem 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e1e8ed;
+  }
+
+  span {
+    background: white;
+    padding: 0 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    position: relative;
+  }
+}
+
+.google-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  color: var(--text-primary);
+  border: 2px solid #e1e8ed;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #f8f9fa;
+    border-color: #d1d9e0;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .google-icon {
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(45deg, #ea4335, #fbbc05, #34a853, #4285f4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    margin-right: 0.75rem;
+  }
+}
+
+// Sección de login
+.login-section {
+  text-align: center;
+  margin-top: 1.5rem;
+
+  .login-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+
+    .login-link {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+
+      &:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Loading overlay
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+
+  .loading-spinner {
+    .spinner-ring {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+// Animaciones
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1) rotate(10deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes sway {
+  0%, 100% { transform: translateX(0px) rotate(0deg); }
+  25% { transform: translateX(-5px) rotate(-2deg); }
+  75% { transform: translateX(5px) rotate(2deg); }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .register-container {
+    .hero-panel {
+      padding: 1rem;
+
+      .brand-title {
+        font-size: 2rem;
+      }
+
+      .hero-icon {
+        font-size: 3rem;
+      }
+
+      .benefits-list {
+        .benefit-item {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .form-panel {
+      padding: 1rem;
+    }
+
+    .form-container {
+      max-width: none;
+    }
+
+    .welcome-title {
+      font-size: 1.5rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-panel {
+    .brand-title {
+      font-size: 1.8rem;
+    }
+
+    .brand-subtitle {
+      font-size: 1rem;
+    }
+  }
+
+  .welcome-title {
+    font-size: 1.3rem;
+  }
+
+  .register-input, .register-button, .google-button {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .form-field {
+    margin-bottom: 1rem;
   }
 }

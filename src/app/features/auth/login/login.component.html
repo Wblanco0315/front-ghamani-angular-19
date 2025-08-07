@@ -1,23 +1,129 @@
-<div class="container">
-  <div class="left-side">
-    <img src="https://images.vexels.com/media/users/3/142789/isolated/preview/2bfb04ad814c4995f0c537c68db5cd0b-logotipo-de-circulo-de-remolinos-multicolor.png?w=360" alt="">
+<div class="login-container">
+  <!-- Left panel with hero content -->
+  <div class="hero-panel">
+    <div class="hero-content">
+      <div class="brand-section">
+        <h1 class="brand-title">Ghamani</h1>
+        <p class="brand-subtitle">Moda Femenina Elegante</p>
+      </div>
+
+      <div class="hero-image">
+        <div class="hero-icon">🛍️</div>
+      </div>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">✓</div>
+          <span>Colecciones exclusivas</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🚚</div>
+          <span>Envío gratuito</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🛡️</div>
+          <span>Compra segura</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="right-side">
-    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
 
-      <div class="input-group">
-        <label for="username">Usuario</label>
-        <input type="text" id="username" name="username" required formControlName="username">
+  <!-- Right panel with login form -->
+  <div class="form-panel">
+    <div class="form-container">
+      <div class="welcome-section">
+        <h2 class="welcome-title">¡Bienvenida de vuelta!</h2>
+        <p class="welcome-subtitle">Inicia sesión para continuar con tu
+          experiencia de moda</p>
       </div>
 
-      <div class="input-group">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" required formControlName="password">
-      </div>
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-field">
+          <label for="username" class="field-label">
+            <span class="label-icon">👤</span>
+            Usuario
+          </label>
+          <input
+            type="email"
+            id="username"
+            formControlName="username"
+            placeholder="Ingresa tu email"
+            class="login-input"
+            [class.invalid]="isFieldInvalid('username')"
+            autocomplete="username">
+          <small
+            *ngIf="isFieldInvalid('username')"
+            class="error-message">
+            {{ getFieldError('username') }}
+          </small>
+        </div>
 
-      <div class="input-group">
-        <button type="submit">Iniciar Sesión</button>
+        <div class="form-field">
+          <label for="password" class="field-label">
+            <span class="label-icon">🔒</span>
+            Contraseña
+          </label>
+          <div class="password-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Ingresa tu contraseña"
+              class="login-input password-input"
+              [class.invalid]="isFieldInvalid('password')"
+              autocomplete="current-password">
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="showPassword = !showPassword">
+              {{ showPassword ? '🙈' : '👁️' }}
+            </button>
+          </div>
+          <small
+            *ngIf="isFieldInvalid('password')"
+            class="error-message">
+            {{ getFieldError('password') }}
+          </small>
+        </div>
+
+        <div class="form-options">
+          <div class="remember-me">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              formControlName="rememberMe"
+              class="checkbox">
+            <label for="rememberMe" class="remember-label">Recordarme</label>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Iniciar Sesión</span>
+          <span *ngIf="isLoading" class="loading-text">
+            <span class="spinner"></span>
+            Iniciando sesión...
+          </span>
+        </button>
+      </form>
+
+      <div class="register-section">
+        <p class="register-text">
+          ¿Eres nueva aquí?
+          <button type="button" class="register-link" (click)="goToRegister()">
+            Crear cuenta
+          </button>
+        </p>
       </div>
-    </form>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-spinner">
+    <div class="spinner-ring"></div>
   </div>
 </div>
